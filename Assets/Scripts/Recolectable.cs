@@ -1,22 +1,18 @@
 ﻿using UnityEngine;
 
-[RequireComponent( typeof( Rigidbody ) )]
 [RequireComponent( typeof( BoxCollider ) )]
 public class Recolectable : MonoBehaviour {
 
-	private Rigidbody rb;
 	private BoxCollider bc;
 
 	void Start () {
 		gameObject.tag = "Recolectable";
-		rb = GetComponent<Rigidbody>();
 		bc = GetComponent<BoxCollider>();
 	}
 
-	public void Recolectado ( Transform padre ) {
+	public void Recolectado ( Transform padre, Vector3 distancia ) {
 		transform.parent = padre;
-		transform.localPosition = Vector3.zero;
-		rb.useGravity = false;
+		transform.position = distancia;
 		bc.enabled = false;
 	}
 

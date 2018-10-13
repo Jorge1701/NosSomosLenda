@@ -1,8 +1,66 @@
 ﻿using UnityEngine;
 
+[RequireComponent( typeof( LineRenderer ) )]
 public class Lexa : MonoBehaviour {
 
-	public float velocidad;
+	public float velocidad = .1f;
+	public float multiVel = 1.5f;
+
+	public float velDisparo = .25f;
+	private float sigDisparo = 0;
+
+	private float mostrarDisparo = .1f;
+	private float ocultarDisparo = 0f;
+
+	private float tiempoGiro = .5f;
+	private float puedeGirar = 0f;
+
+	private Camera camara;
+	private LineRenderer lr;
+
+	private Transform disparo;
+
+	private Animator anim;
+
+	void Start () {
+		camara = GameObject.FindGameObjectsWithTag( "MainCamera" )[0].GetComponent<Camera>();
+		lr = GetComponent<LineRenderer>();
+		disparo = transform.Find( "Disparo" );
+
+		anim = transform.Find( "Modelo" ).GetComponent<Animator>();
+	}
+
+	void Update () {
+		if ( ocultarDisparo <= 0 )
+			lr.enabled = false;
+
+		sigDisparo += Time.deltaTime;
+		ocultarDisparo -= Time.deltaTime;
+		puedeGirar -= Time.deltaTime;
+
+		bool disparando = Input.GetMouseButton( 0 );
+
+		anim.SetBool( "Disparar", disparando );
+
+		if ( sigDisparo >= velDisparo ) {
+			sigDisparo = 0;
+
+			if ( disparando ) {
+				RaycastHit hit;
+				Ray ray = camara.ScreenPointToRay( Input.mousePosition );
+
+				if ( Physics.Raycast( ray, out hit ) ) {
+					transform.LookAt( new Vector3( hit.point.x, 0, hit.point.z ) );
+
+					puedeGirar = tiempoGiro;
+					ocultarDisparo = mostrarDisparo;
+					lr.enabled = true;
+					lr.SetPosition( 0, disparo.position );
+					lr.SetPosition( 1, disparo.forward * 100f );
+				}
+			}
+		}
+	}
 
 	void FixedUpdate () {
 		Vector3 irA = Vector3.zero;
@@ -19,7 +77,19 @@ public class Lexa : MonoBehaviour {
 		if ( Input.GetKey( "d" ) )
 			irA += new Vector3( 1, 0, 0 );
 
-		transform.position += irA.normalized * velocidad;
-		transform.LookAt( transform.position + irA );
+		float vel = velocidad;
+
+		anim.SetBool( "Caminar", irA.magnitude > 0 );
+
+		if ( Input.GetKey( "left shift" ) ) {
+			vel *= multiVel;
+			anim.SetBool( "Correr", true );
+		} else
+			anim.SetBool( "Correr", false );
+
+		transform.position += irA.normalized * vel;
+
+		if ( puedeGirar <= 0 )
+			transform.LookAt( transform.position + irA );
 	}
 }
