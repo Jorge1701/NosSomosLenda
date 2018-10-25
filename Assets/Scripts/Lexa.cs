@@ -3,13 +3,16 @@
 [RequireComponent( typeof( LineRenderer ) )]
 public class Lexa : MonoBehaviour {
 
+	public GameObject choqueBala;
+
+	public float disparoDist = 15f;
 	public float velocidad = .1f;
 	public float multiVel = 1.5f;
 
 	public float velDisparo = .25f;
 	private float sigDisparo = 0;
 
-	private float mostrarDisparo = .1f;
+	private float mostrarDisparo = .01f;
 	private float ocultarDisparo = 0f;
 
 	private float tiempoGiro = .5f;
@@ -52,14 +55,24 @@ public class Lexa : MonoBehaviour {
 				RaycastHit hit;
 				Ray ray = camara.ScreenPointToRay( Input.mousePosition );
 
-				if ( Physics.Raycast( ray, out hit ) ) {
-					transform.LookAt( new Vector3( hit.point.x, 0, hit.point.z ) );
+				if ( Physics.Raycast( ray, out hit, Mathf.Infinity, LayerMask.GetMask( "Balas" ) ) ) {
+					transform.LookAt( new Vector3( hit.point.x, transform.position.y, hit.point.z ) );
 
 					puedeGirar = tiempoGiro;
 					ocultarDisparo = mostrarDisparo;
 					lr.enabled = true;
 					lr.SetPosition( 0, disparo.position );
-					lr.SetPosition( 1, disparo.forward * 100f );
+					Vector3 puntoFinal = disparo.position + disparo.forward * ( disparoDist + Random.value * 1.5f );
+					puntoFinal.y = disparo.position.y;
+					lr.SetPosition( 1, puntoFinal );
+
+					RaycastHit hit2;
+					Ray ray2 = new Ray( disparo.position, disparo.forward );
+
+					if ( Physics.Raycast( ray2, out hit2, disparoDist + 1.5f ) ) {
+						GameObject bala = Instantiate( choqueBala, hit2.point, choqueBala.transform.rotation ) as GameObject;
+						bala.transform.LookAt( transform.position );
+					}
 				}
 			}
 		}
@@ -87,12 +100,12 @@ public class Lexa : MonoBehaviour {
 		if ( Input.GetKey( "left shift" ) ) {
 			vel *= multiVel;
 			anim.SetBool( "Correr", true );
-			} else
+		} else
 			anim.SetBool( "Correr", false );
 
-			transform.position += irA.normalized * vel;
+		transform.position += irA.normalized * vel * Time.deltaTime;
 
-			if ( puedeGirar <= 0 )
+		if ( puedeGirar <= 0 )
 			transform.LookAt( transform.position + irA );
 		}
 	}
