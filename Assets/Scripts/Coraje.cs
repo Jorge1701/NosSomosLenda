@@ -4,7 +4,7 @@
 [RequireComponent( typeof( Rigidbody ) )]
 public class Coraje : MonoBehaviour {
 
-	public float velocidad = .1f;
+	public float velocidad = 3f;
 	public float distancia = 2.5f;
 	public float velVuelo = 3f;
 
