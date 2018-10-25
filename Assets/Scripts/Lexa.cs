@@ -88,16 +88,16 @@ public class Lexa : MonoBehaviour {
 		Vector3 irA = Vector3.zero;
 
 		if ( Input.GetKey( "w" ) )
-			irA += new Vector3( 0, 0, 1 );
+		irA += new Vector3( 0, 0, 1 );
 
 		if ( Input.GetKey( "s" ) )
-			irA += new Vector3( 0, 0, -1 );
+		irA += new Vector3( 0, 0, -1 );
 
 		if ( Input.GetKey( "a" ) )
-			irA += new Vector3( -1, 0, 0 );
+		irA += new Vector3( -1, 0, 0 );
 
 		if ( Input.GetKey( "d" ) )
-			irA += new Vector3( 1, 0, 0 );
+		irA += new Vector3( 1, 0, 0 );
 
 		float vel = velocidad;
 
@@ -113,5 +113,5 @@ public class Lexa : MonoBehaviour {
 
 		if ( puedeGirar <= 0 )
 			transform.LookAt( transform.position + irA );
+		}
 	}
-}
