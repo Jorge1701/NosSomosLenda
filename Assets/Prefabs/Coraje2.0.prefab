@@ -176,7 +176,7 @@ GameObject:
   - component: {fileID: 136808823177783964}
   - component: {fileID: 120776459490365976}
   m_Layer: 0
-  m_Name: NuevoCoraje
+  m_Name: Coraje2.0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

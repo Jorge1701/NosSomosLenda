@@ -5,6 +5,8 @@ public class Lexa : MonoBehaviour {
 
 	public GameObject choqueBala;
 
+	public float danio = 20;
+
 	public float disparoDist = 15f;
 	public float velocidad = .1f;
 	public float multiVel = 1.5f;
@@ -70,6 +72,10 @@ public class Lexa : MonoBehaviour {
 					Ray ray2 = new Ray( disparo.position, disparo.forward );
 
 					if ( Physics.Raycast( ray2, out hit2, disparoDist + 1.5f ) ) {
+						if ( hit2.transform.gameObject.tag.CompareTo( "Zombie" ) == 0 ) {
+							ZombieController z = hit2.transform.GetComponent<ZombieController>();
+							z.daniar( danio );
+						}
 						GameObject bala = Instantiate( choqueBala, hit2.point, choqueBala.transform.rotation ) as GameObject;
 						bala.transform.LookAt( transform.position );
 					}
