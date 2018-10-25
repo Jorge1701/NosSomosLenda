@@ -78,14 +78,18 @@ public class Coraje : MonoBehaviour {
 	void FixedUpdate () {
 		if ( estado == Estado.CENTRO )
 			ModificarRayo();
-		else
+		else {
 			lr.enabled = false;
+			lr.SetPosition( 0, transform.position );
+			lr.SetPosition( 1, transform.position );
+			lr.SetPosition( 2, transform.position );
+		}
 
 
 		if ( objetivo != null ) {
 			if ( ( transform.position - objetivo.position ).magnitude >= ( estado == Estado.LEXA ? distancia : 0 ) ) {
 				transform.LookAt( new Vector3( objetivo.position.x, transform.position.y, objetivo.position.z ) );
-				transform.position += transform.forward * velocidad;
+				transform.position += transform.forward * velocidad * Time.deltaTime;
 				rb.velocity = Vector3.zero;
 				rb.angularVelocity = Vector3.zero;
 			}
