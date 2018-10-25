@@ -3,8 +3,8 @@ using UnityEngine.AI;
 
 public class ZombieController : MonoBehaviour {
 
-	public NavMeshAgent zombie;
-	public GameObject centro;
+	private NavMeshAgent zombie;
+	private GameObject centro;
 	private GameObject player;
 	private Animator anim;
 	public float vida = 200;
@@ -28,6 +28,7 @@ public class ZombieController : MonoBehaviour {
     	player = GameObject.FindGameObjectsWithTag("Player")[0]; //Obtener jugador por tag;		
     	centro = GameObject.FindGameObjectsWithTag("Centro")[0];
     	anim = GetComponent<Animator>();
+        zombie = GetComponent<NavMeshAgent>();
     }	
 
     void Update () {
