@@ -8,6 +8,7 @@ TagManager:
   - Centro
   - FxTemporaire
   - Zombie
+  - NavMesh
   layers:
   - Default
   - TransparentFX

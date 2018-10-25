@@ -62,11 +62,8 @@ public class Lexa : MonoBehaviour {
 
 					puedeGirar = tiempoGiro;
 					ocultarDisparo = mostrarDisparo;
-					lr.enabled = true;
-					lr.SetPosition( 0, disparo.position );
 					Vector3 puntoFinal = disparo.position + disparo.forward * ( disparoDist + Random.value * 1.5f );
 					puntoFinal.y = disparo.position.y;
-					lr.SetPosition( 1, puntoFinal );
 
 					RaycastHit hit2;
 					Ray ray2 = new Ray( disparo.position, disparo.forward );
@@ -76,9 +73,16 @@ public class Lexa : MonoBehaviour {
 							ZombieController z = hit2.transform.GetComponent<ZombieController>();
 							z.daniar( danio );
 						}
+
 						GameObject bala = Instantiate( choqueBala, hit2.point, choqueBala.transform.rotation ) as GameObject;
 						bala.transform.LookAt( transform.position );
+
+						puntoFinal = new Vector3( hit2.point.x, disparo.position.y, hit2.point.z );
 					}
+
+					lr.enabled = true;
+					lr.SetPosition( 0, disparo.position );
+					lr.SetPosition( 1, puntoFinal );
 				}
 			}
 		}

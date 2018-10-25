@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 
 public class Spawn : MonoBehaviour {
 
@@ -15,6 +16,8 @@ public class Spawn : MonoBehaviour {
 	private bool dia = false;
 
 	void Start () {
+		GameObject.FindGameObjectsWithTag( "NavMesh" )[0].GetComponent<NavMeshSurface>().BuildNavMesh();;
+
 		zombie = GameObject.FindGameObjectsWithTag( "Zombie" )[0];
 		zombie.SetActive( false );
 
@@ -22,11 +25,14 @@ public class Spawn : MonoBehaviour {
 
 		for ( int i = 0; i < spawns.Length; i++ )
 			spawns[i] = transform.GetChild( i );
+
+		IniciarDia();
 	}
 	
 	void Update () {
 		if ( dia && zombiesALaVez > zombiesVivos && zombiesOleadaMax > 0 ) {
 			GameObject z = Instantiate( zombie, spawns[(int) Mathf.Floor( Random.value * spawns.Length )].position, zombie.transform.rotation ) as GameObject;
+			z.GetComponent<ZombieController>().SetSpawn( this );
 			z.SetActive( true );
 			zombiesVivos++;
 			zombiesOleadaMax--;
@@ -48,5 +54,9 @@ public class Spawn : MonoBehaviour {
 
 	public void FinDelDia () {
 		dia = false;
+	}
+
+	public void ZombieMuerto () {
+		zombiesVivos--;
 	}
 }

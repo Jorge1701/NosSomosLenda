@@ -3,19 +3,30 @@ using UnityEngine.AI;
 
 public class ZombieController : MonoBehaviour {
 
+    private CapsuleCollider cc;
 	private NavMeshAgent zombie;
 	private GameObject centro;
 	private GameObject player;
 	private Animator anim;
+    private Spawn spawn;
 	public float vida = 200;
 
 	public float getVida(){
 		return vida;
 	}
 
+    public void SetSpawn (Spawn spawn) {
+        this.spawn = spawn;
+    }
+
 	public void daniar(float danio){
+        if ( vida <= 0 )
+            return;
+
 		vida -= danio;
 		if(vida <= 0){
+            cc.enabled = false;
+            spawn.ZombieMuerto();
 			anim.SetBool("atacar_jugador", false);
 			anim.SetBool("atacar_base", false);
 			anim.SetBool("morir", true);
@@ -25,6 +36,7 @@ public class ZombieController : MonoBehaviour {
 	}
 
 	void Start(){
+        cc = GetComponent<CapsuleCollider>();
     	player = GameObject.FindGameObjectsWithTag("Player")[0]; //Obtener jugador por tag;		
     	centro = GameObject.FindGameObjectsWithTag("Centro")[0];
     	anim = GetComponent<Animator>();

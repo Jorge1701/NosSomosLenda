@@ -2776,8 +2776,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23401b01ebb09ca4d877fe4959da4542, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zombie: {fileID: 195482152740163324}
-  centro: {fileID: 0}
+  vida: 200
 --- !u!136 &136556570839187834
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -2786,7 +2785,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1028414116155568}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
