@@ -9,6 +9,7 @@ TagManager:
   - FxTemporaire
   - Zombie
   - NavMesh
+  - marcadorZombies
   layers:
   - Default
   - TransparentFX
