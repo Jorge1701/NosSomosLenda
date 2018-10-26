@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Recolectable
   - Centro
+  - FxTemporaire
+  - Zombie
+  - NavMesh
   layers:
   - Default
   - TransparentFX
@@ -16,7 +19,7 @@ TagManager:
   - 
   - 
   - PostProcessing
-  - 
+  - Balas
   - 
   - 
   - 
