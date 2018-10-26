@@ -5,7 +5,10 @@ public class Lexa : MonoBehaviour {
 
 	public GameObject choqueBala;
 
-	public float danio = 20;
+	public float vidaMax = 250;
+	private float vida;
+
+	public float danio = 45;
 
 	public float disparoDist = 15f;
 	public float velocidad = .1f;
@@ -28,6 +31,8 @@ public class Lexa : MonoBehaviour {
 	private Animator anim;
 
 	void Start () {
+		vida = vidaMax;
+
 		camara = GameObject.FindGameObjectsWithTag( "MainCamera" )[0].GetComponent<Camera>();
 		lr = GetComponent<LineRenderer>();
 		disparo = transform.Find( "Disparo" );
@@ -36,6 +41,9 @@ public class Lexa : MonoBehaviour {
 	}
 
 	void Update () {
+		if ( vida <= 0 )
+			return;
+
 		if ( ocultarDisparo <= 0 ) {
 			lr.enabled = false;
 			lr.SetPosition( 0, transform.position );
@@ -89,19 +97,22 @@ public class Lexa : MonoBehaviour {
 	}
 
 	void FixedUpdate () {
+		if ( vida <= 0 )
+			return;
+
 		Vector3 irA = Vector3.zero;
 
 		if ( Input.GetKey( "w" ) )
-		irA += new Vector3( 0, 0, 1 );
+			irA += new Vector3( 0, 0, 1 );
 
 		if ( Input.GetKey( "s" ) )
-		irA += new Vector3( 0, 0, -1 );
+			irA += new Vector3( 0, 0, -1 );
 
 		if ( Input.GetKey( "a" ) )
-		irA += new Vector3( -1, 0, 0 );
+			irA += new Vector3( -1, 0, 0 );
 
 		if ( Input.GetKey( "d" ) )
-		irA += new Vector3( 1, 0, 0 );
+			irA += new Vector3( 1, 0, 0 );
 
 		float vel = velocidad;
 
@@ -117,5 +128,16 @@ public class Lexa : MonoBehaviour {
 
 		if ( puedeGirar <= 0 )
 			transform.LookAt( transform.position + irA );
+	}
+
+	public void daniar( float danio ) {
+		if ( vida <= 0 )
+			return;
+
+		vida -= danio;
+
+		if ( vida <= 0 ) {
+			Destroy( gameObject, 3f );
 		}
 	}
+}
