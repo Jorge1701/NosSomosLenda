@@ -3,30 +3,34 @@ using UnityEngine.AI;
 
 public class ZombieController : MonoBehaviour {
 
-    private CapsuleCollider cc;
+	private CapsuleCollider cc;
 	private NavMeshAgent zombie;
 	private GameObject centro;
 	private GameObject player;
 	private Animator anim;
-    private Spawn spawn;
+	private Spawn spawn;
 	public float vida = 200;
+	public float ataque = 10;
+	private Lexa scriptLexa;
+	public float tiempoEntreAtaque = 2;
+	private float tiempoSiguienteAtaque;
 
 	public float getVida(){
 		return vida;
 	}
 
-    public void SetSpawn (Spawn spawn) {
-        this.spawn = spawn;
-    }
+	public void SetSpawn (Spawn spawn) {
+		this.spawn = spawn;
+	}
 
 	public void daniar(float danio){
-        if ( vida <= 0 )
-            return;
+		if ( vida <= 0 )
+		return;
 
 		vida -= danio;
 		if(vida <= 0){
-            cc.enabled = false;
-            spawn.ZombieMuerto();
+			cc.enabled = false;
+			spawn.ZombieMuerto();
 			anim.SetBool("atacar_jugador", false);
 			anim.SetBool("atacar_base", false);
 			anim.SetBool("morir", true);
@@ -36,16 +40,25 @@ public class ZombieController : MonoBehaviour {
 	}
 
 	void Start(){
-        cc = GetComponent<CapsuleCollider>();
+		cc = GetComponent<CapsuleCollider>();
     	player = GameObject.FindGameObjectsWithTag("Player")[0]; //Obtener jugador por tag;		
     	centro = GameObject.FindGameObjectsWithTag("Centro")[0];
     	anim = GetComponent<Animator>();
-        zombie = GetComponent<NavMeshAgent>();
+    	zombie = GetComponent<NavMeshAgent>();
+    	scriptLexa = player.GetComponent<Lexa>();
+
+    	tiempoSiguienteAtaque = 0;
     }	
 
     void Update () {
         //Debug.log(centro, 'gameObject');
         //Debug.Log(centro);
+    	tiempoSiguienteAtaque -= Time.deltaTime;
+
+    	if(player == null)
+    	return;
+
+    	Debug.Log(tiempoEntreAtaque);
 
     	float distance_jugador = Vector2.Distance(new Vector2(player.transform.position.x, player.transform.position.z), new Vector2(zombie.transform.position.x, zombie.transform.position.z)); 
     	float distance_base = Vector2.Distance(new Vector2(centro.transform.position.x, player.transform.position.z), new Vector2(zombie.transform.position.x, zombie.transform.position.z)); 
@@ -58,6 +71,11 @@ public class ZombieController : MonoBehaviour {
     				zombie.transform.LookAt(player.transform);
     				anim.SetBool("atacar_jugador", true);
     				anim.SetBool("atacar_base", false);
+    				if(tiempoSiguienteAtaque <= 0){
+    					scriptLexa.daniar(ataque);
+    					tiempoSiguienteAtaque = tiempoEntreAtaque;
+    					Debug.Log("ataco");
+    				}
     			}else{
     				anim.SetBool("atacar_jugador", false);
     			}
