@@ -24,6 +24,7 @@ public class Lexa : MonoBehaviour {
 	private float puedeGirar = 0f;
 
 	private Camera camara;
+	private Transform direccion;
 	private LineRenderer lr;
 
 	private Transform disparo;
@@ -36,6 +37,11 @@ public class Lexa : MonoBehaviour {
 		camara = GameObject.FindGameObjectsWithTag( "MainCamera" )[0].GetComponent<Camera>();
 		lr = GetComponent<LineRenderer>();
 		disparo = transform.Find( "Disparo" );
+
+		if ( GameObject.Find( "Direccion" ) == null )
+			Debug.LogWarning( "Cambiar camara por el prefab 'Camara Principal'" );
+		else
+			direccion = GameObject.Find( "Direccion" ).transform;
 
 		anim = transform.Find( "Modelo" ).GetComponent<Animator>();
 	}
@@ -103,22 +109,22 @@ public class Lexa : MonoBehaviour {
 		Vector3 irA = Vector3.zero;
 
 		if ( Input.GetKey( "w" ) )
-			irA += new Vector3( 0, 0, 1 );
+			irA += direccion.forward;
 
 		if ( Input.GetKey( "s" ) )
-			irA += new Vector3( 0, 0, -1 );
+			irA -= direccion.forward;
 
 		if ( Input.GetKey( "a" ) )
-			irA += new Vector3( -1, 0, 0 );
+			irA -= direccion.right;
 
 		if ( Input.GetKey( "d" ) )
-			irA += new Vector3( 1, 0, 0 );
+			irA += direccion.right;
 
 		float vel = velocidad;
 
 		anim.SetBool( "Caminar", irA.magnitude > 0 );
 
-		if ( Input.GetKey( "left shift" ) ) {
+		if ( Input.GetKey( "left shift" ) && irA.magnitude > 0 ) {
 			vel *= multiVel;
 			anim.SetBool( "Correr", true );
 		} else
@@ -136,8 +142,7 @@ public class Lexa : MonoBehaviour {
 
 		vida -= danio;
 
-		if ( vida <= 0 ) {
+		if ( vida <= 0 )
 			Destroy( gameObject, 3f );
-		}
 	}
 }

@@ -58,8 +58,6 @@ public class ZombieController : MonoBehaviour {
     	if(player == null)
     	return;
 
-    	Debug.Log(tiempoEntreAtaque);
-
     	float distance_jugador = Vector2.Distance(new Vector2(player.transform.position.x, player.transform.position.z), new Vector2(zombie.transform.position.x, zombie.transform.position.z)); 
     	float distance_base = Vector2.Distance(new Vector2(centro.transform.position.x, player.transform.position.z), new Vector2(zombie.transform.position.x, zombie.transform.position.z)); 
 
@@ -74,7 +72,6 @@ public class ZombieController : MonoBehaviour {
     				if(tiempoSiguienteAtaque <= 0){
     					scriptLexa.daniar(ataque);
     					tiempoSiguienteAtaque = tiempoEntreAtaque;
-    					Debug.Log("ataco");
     				}
     			}else{
     				anim.SetBool("atacar_jugador", false);
