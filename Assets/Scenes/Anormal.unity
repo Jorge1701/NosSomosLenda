@@ -178,7 +178,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!114 &170076736
 MonoBehaviour:
@@ -197,7 +197,7 @@ MonoBehaviour:
   material2: {fileID: 2100000, guid: e2d00c4161dd33247a845e9e47871812, type: 2}
   Duracion: 0
   LerpSky: 1
-  velocidad: 0.05
+  velocidad: 0.1
   ExtiendeDia: 2
   ExtiendeNoche: -2
 --- !u!1 &204446950
@@ -285,7 +285,7 @@ Transform:
   m_LocalScale: {x: 13, y: 1.13, z: 13}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &465189265
 Prefab:
@@ -324,7 +324,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 38905eedc2fe93347831d9ed264a7912, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 38905eedc2fe93347831d9ed264a7912, type: 3}
@@ -489,7 +489,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 199ba61b407d7435aa1a5551f0844272, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 199ba61b407d7435aa1a5551f0844272, type: 3}
       propertyPath: m_LocalScale.x
@@ -617,7 +617,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 7f205b6aefc55c84a88371aea185e8e8, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 7f205b6aefc55c84a88371aea185e8e8, type: 3}
       propertyPath: m_Enabled
@@ -685,7 +685,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5e7e4a46119ad774b91921b4751121ce, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 5e7e4a46119ad774b91921b4751121ce, type: 3}
       propertyPath: m_Name
@@ -739,7 +739,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5e7e4a46119ad774b91921b4751121ce, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 5e7e4a46119ad774b91921b4751121ce, type: 3}
       propertyPath: m_Name
@@ -773,12 +773,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   encendida: 0
-  linterna: {fileID: 0}
+  linterna: {fileID: 170076734}
   material1: {fileID: 2100000, guid: 93074eff559734934be9005d139a9ad5, type: 2}
   material2: {fileID: 2100000, guid: e2d00c4161dd33247a845e9e47871812, type: 2}
   Duracion: 0
   LerpSky: 1
-  velocidad: 0.05
+  velocidad: 0.1
   ExtiendeDia: 2
   ExtiendeNoche: -2
 --- !u!4 &2094416912 stripped

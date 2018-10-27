@@ -20,7 +20,7 @@ function Start () {
 
 }function Update () {
 
-		
+	GetComponent.<Transform>().Rotate((velocidad+1),0,0);		
 	if(LerpSky)		{	
 	
 		if(Duracion > ExtiendeDia && dia){

@@ -14,6 +14,7 @@ public class ZombieController : MonoBehaviour {
 	private Lexa scriptLexa;
 	public float tiempoEntreAtaque = 2;
 	private float tiempoSiguienteAtaque;
+	public GameObject particulasSangre;
 
 	public float getVida(){
 		return vida;
@@ -24,11 +25,7 @@ public class ZombieController : MonoBehaviour {
 	}
 
 	public void daniar(float danio){
-		if ( vida <= 0 )
-		return;
-
-		vida -= danio;
-		if(vida <= 0){
+		if ( vida <= 0 ){
 			cc.enabled = false;
 			spawn.ZombieMuerto();
 			anim.SetBool("atacar_jugador", false);
@@ -36,7 +33,13 @@ public class ZombieController : MonoBehaviour {
 			anim.SetBool("morir", true);
 			Destroy(gameObject, 5f);
 			zombie.SetDestination(transform.position);
+			return;
 		}
+		
+		vida -= danio;
+		GameObject sangre = GameObject.Instantiate(particulasSangre, transform.position, particulasSangre.transform.rotation) as GameObject;
+		Destroy(sangre, 2f);
+		
 	}
 
 	void Start(){
