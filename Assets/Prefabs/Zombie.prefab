@@ -2777,6 +2777,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vida: 200
+  ataque: 10
+  tiempoEntreAtaque: 2
+  particulasSangre: {fileID: 1096473672317988, guid: 8004967131c98cb42973b674ef971d96,
+    type: 2}
 --- !u!136 &136556570839187834
 CapsuleCollider:
   m_ObjectHideFlags: 1
