@@ -140,7 +140,10 @@ public class Lexa : MonoBehaviour {
 		if ( vida <= 0 )
 			return;
 
-		vida -= danio;
+		if ( danio == -1 )
+			vida = 5;
+		else
+			vida -= danio;
 
 		if ( vida <= 0 )
 			Destroy( gameObject, 3f );
