@@ -70,7 +70,7 @@ GameObject:
   - component: {fileID: 114931975754945878}
   - component: {fileID: 95523920625059442}
   m_Layer: 9
-  m_Name: Zombie Normal 1
+  m_Name: Zombie Explosivo
   m_TagString: Zombie
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2781,7 +2781,8 @@ MonoBehaviour:
   tiempoEntreAtaque: 2
   particulasSangre: {fileID: 1096473672317988, guid: 8004967131c98cb42973b674ef971d96,
     type: 2}
-  tipo: 0
+  dna: {fileID: 1738623847708202, guid: 1180d77e33530204e9d1906c4d4f3ee7, type: 2}
+  tipo: 1
 --- !u!136 &136556570839187834
 CapsuleCollider:
   m_ObjectHideFlags: 1

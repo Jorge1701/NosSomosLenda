@@ -69,8 +69,9 @@ GameObject:
   - component: {fileID: 54797385337400690}
   - component: {fileID: 114931975754945878}
   - component: {fileID: 95523920625059442}
+  - component: {fileID: 114015802929931722}
   m_Layer: 9
-  m_Name: Zombie Normal 1
+  m_Name: Zombie Escupidor
   m_TagString: Zombie
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2765,6 +2766,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114015802929931722
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1028414116155568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1094f8e37248c4d47b89f66852834770, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  escupir: {fileID: 1698083524356286, guid: 810a68cafd19491498880ee86a94629a, type: 2}
+  velocidad: 3
 --- !u!114 &114931975754945878
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2781,7 +2795,8 @@ MonoBehaviour:
   tiempoEntreAtaque: 2
   particulasSangre: {fileID: 1096473672317988, guid: 8004967131c98cb42973b674ef971d96,
     type: 2}
-  tipo: 0
+  dna: {fileID: 1738623847708202, guid: 1180d77e33530204e9d1906c4d4f3ee7, type: 2}
+  tipo: 2
 --- !u!136 &136556570839187834
 CapsuleCollider:
   m_ObjectHideFlags: 1

@@ -16,6 +16,7 @@ public class ZombieController : MonoBehaviour {
 	private float tiempoSiguienteAtaque;
 	public GameObject particulasSangre;
 	private Escupitajo escupitajo;
+	public GameObject dna;
 
 	public enum Tipo{
 		ZOMBIE1, ZOMBIE2, ZOMBIE3
@@ -39,6 +40,12 @@ public class ZombieController : MonoBehaviour {
 			anim.SetBool("atacar_base", false);
 			anim.SetBool("morir", true);
 			Destroy(gameObject, 5f);
+			if(tipo == Tipo.ZOMBIE1){
+				if(Random.value < .5)
+					Instantiate(dna, transform.position, dna.transform.rotation);
+			}else{
+				Instantiate(dna, transform.position, dna.transform.rotation);		
+			}
 			zombie.SetDestination(transform.position);
 			return;
 		}
@@ -56,7 +63,6 @@ public class ZombieController : MonoBehaviour {
     	anim = GetComponent<Animator>();
     	zombie = GetComponent<NavMeshAgent>();
     	scriptLexa = player.GetComponent<Lexa>();
-    	tipo = Tipo.ZOMBIE3;
 
     	if(tipo == Tipo.ZOMBIE3){
     		ataque = ataque * 3;

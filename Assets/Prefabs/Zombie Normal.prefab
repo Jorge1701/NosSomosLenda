@@ -2781,6 +2781,7 @@ MonoBehaviour:
   tiempoEntreAtaque: 2
   particulasSangre: {fileID: 1096473672317988, guid: 8004967131c98cb42973b674ef971d96,
     type: 2}
+  dna: {fileID: 1738623847708202, guid: 1180d77e33530204e9d1906c4d4f3ee7, type: 2}
   tipo: 0
 --- !u!136 &136556570839187834
 CapsuleCollider:
