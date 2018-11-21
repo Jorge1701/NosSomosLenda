@@ -15,6 +15,7 @@ public class ZombieController : MonoBehaviour {
 	public float tiempoEntreAtaque = 2;
 	private float tiempoSiguienteAtaque;
 	public GameObject particulasSangre;
+	private Escupitajo escupitajo;
 
 	public enum Tipo{
 		ZOMBIE1, ZOMBIE2, ZOMBIE3
@@ -60,6 +61,8 @@ public class ZombieController : MonoBehaviour {
     	if(tipo == Tipo.ZOMBIE3){
     		ataque = ataque * 3;
     		vida = vida * 2;
+    		escupitajo = GetComponent<Escupitajo>();
+    		tiempoEntreAtaque = 5;
     	}
     	tiempoSiguienteAtaque = 0;	
 
@@ -71,14 +74,19 @@ void Update () {
         //Debug.Log(centro);
 	tiempoSiguienteAtaque -= Time.deltaTime;
 
-	if(player == null)
-		return;
+	Vector3 posicionCentro = new Vector3(centro.transform.position.x, 1.5f, centro.transform.position.z);
+	
+	float distance_jugador = 0;
+	if(player != null)	
+		distance_jugador = Vector2.Distance(new Vector2(player.transform.position.x, player.transform.position.z), new Vector2(zombie.transform.position.x, zombie.transform.position.z)); 
+	else{
+		detenerAtaque();
+		zombie.SetDestination(posicionCentro);
+	}
 
-	float distance_jugador = Vector2.Distance(new Vector2(player.transform.position.x, player.transform.position.z), new Vector2(zombie.transform.position.x, zombie.transform.position.z)); 
 	float distance_base = Vector2.Distance(new Vector2(centro.transform.position.x, player.transform.position.z), new Vector2(zombie.transform.position.x, zombie.transform.position.z)); 
 
-
-	if(vida > 0){
+	if(vida > 0 && player != null){
 		Vector3 posicionJugador = new Vector3(player.transform.position.x, 1.5f, player.transform.position.z);
 		if(tipo == Tipo.ZOMBIE1 || tipo == Tipo.ZOMBIE2){
 			if(distance_jugador <= distance_base){	
@@ -98,7 +106,7 @@ void Update () {
 				}
 
 			}else{
-				zombie.SetDestination(new Vector3(centro.transform.position.x, 1.5f, centro.transform.position.z));  
+				zombie.SetDestination(posicionCentro);  
 				if(distance_base <= 3){
 					//LLamar funcion para hacer daño a la base
 					atacarBase();
@@ -111,7 +119,7 @@ void Update () {
 			if(distance_jugador <= 20){
 				atacarJugador();
 				if(tiempoSiguienteAtaque <= 0){
-					//scriptLexa.daniar(ataque);
+					escupitajo.Escupir();
 					tiempoSiguienteAtaque = tiempoEntreAtaque;
 				}
 			}else{
