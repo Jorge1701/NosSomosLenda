@@ -64,14 +64,17 @@ public class Coraje : MonoBehaviour {
 		transform.position = new Vector3( transform.position.x, Mathf.Lerp( .25f, .75f, ( Mathf.Sin( tiempo ) + 1 ) / 2 ), transform.position.z );
 
 		if ( Input.GetMouseButtonDown( 1 ) && estado != Estado.CENTRO ) {
+			Debug.Log( "Click" );
 			RaycastHit hit;
 			Ray ray = camara.ScreenPointToRay( Input.mousePosition );
 
-			if ( Physics.Raycast( ray, out hit ) )
+			if ( Physics.Raycast( ray, out hit, Mathf.Infinity, LayerMask.GetMask( "Recolectable" ), QueryTriggerInteraction.UseGlobal ) ) {
+				Debug.Log( hit.transform.gameObject );
 				if ( hit.transform.gameObject.tag.CompareTo( "Recolectable" ) == 0 ) {
 					objetivo = hit.transform;
 					estado = Estado.BUSCAR;
 				}
+			}
 		}
 	}
 	

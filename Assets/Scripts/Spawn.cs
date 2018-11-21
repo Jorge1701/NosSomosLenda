@@ -17,16 +17,9 @@ public class Spawn : MonoBehaviour {
 
 	private bool dia = false;
 
-	private MarcadorZombies marcador;
+	private MarcadorZombies marcador = null;
 
 	void Start () {
-		GameObject[] mz = GameObject.FindGameObjectsWithTag( "marcadorZombies" );
-
-		if ( mz.Length == 0 )
-			Debug.LogWarning( "Coloque el prefab 'Marcador Zombies' dentro de un Canvas" );
-		else
-			marcador = mz[0].GetComponent<MarcadorZombies>();
-
 		GameObject.FindGameObjectsWithTag( "NavMesh" )[0].GetComponent<NavMeshSurface>().BuildNavMesh();;
 
 		zombie = GameObject.FindGameObjectsWithTag( "Zombie" )[0];
@@ -63,14 +56,26 @@ public class Spawn : MonoBehaviour {
 		RecargarBarra();
 	}
 
-	void RecargarBarra () {
-		if ( marcador == null )
-			return;
+	private bool err = true;
 
-		marcador.SetValores(
-			( float ) ( ( float ) ( zombiesMatados + zombiesVivos ) / ( float ) zombiesEnOleada ),
-			( float ) ( ( float ) zombiesMatados / ( float ) zombiesEnOleada )
-		);
+	void RecargarBarra () {
+		if ( err ) {
+			CargarBarra();
+			err = false;
+		} else
+			marcador.SetValores(
+				( float ) ( ( float ) ( zombiesMatados + zombiesVivos ) / ( float ) zombiesEnOleada ),
+				( float ) ( ( float ) zombiesMatados / ( float ) zombiesEnOleada )
+			);
+	}
+
+	void CargarBarra() {
+		GameObject[] mz = GameObject.FindGameObjectsWithTag( "marcadorZombies" );
+
+		if ( mz.Length == 0 )
+			Debug.LogWarning( "Coloque el prefab 'Marcador Zombies' dentro de un Canvas" );
+		else
+			marcador = mz[0].GetComponent<MarcadorZombies>();
 	}
 
 	public void IniciarDia () {
