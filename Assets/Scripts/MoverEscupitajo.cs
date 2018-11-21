@@ -10,7 +10,7 @@ public class MoverEscupitajo : MonoBehaviour {
 	void Update () {
 		if ( velocidad != 0f ) {
 			transform.position += transform.forward * velocidad * Time.deltaTime;
-			transform.position = new Vector3( transform.position.x, 1.5f, transform.position.z );
+			transform.position = new Vector3( transform.position.x, 1.2f, transform.position.z );
 
 			if ( ( irA - transform.position ).magnitude <= 1.5f ) {
 				Instantiate( humo, irA, humo.transform.rotation );
