@@ -142,17 +142,17 @@ public class Lexa : MonoBehaviour {
 	}
 
 	public void daniar( float danio ) {
-		if ( vida <= 0 )
+		if ( vida <= 0f )
 			return;
 
-		if ( danio == -1 )
-			vida = 5;
+		if ( danio == -1f )
+			vida = 5f;
 		else
 			vida -= danio;
 
 		barraVida.Vida( vida );
 
-		if ( vida <= 0 )
+		if ( vida <= 0f )
 			Destroy( gameObject, 3f );
 	}
 }
