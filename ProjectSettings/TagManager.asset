@@ -11,6 +11,7 @@ TagManager:
   - NavMesh
   - marcadorZombies
   - HealthBar
+  - Sol
   layers:
   - Default
   - TransparentFX

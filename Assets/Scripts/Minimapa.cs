@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class Minimapa : MonoBehaviour {
 
-    public Transform jugador;
+    private Transform jugador;
+
+    void Start () {
+    	jugador = GameObject.FindGameObjectsWithTag( "Player" )[0].transform;
+    }
 	
 	// Update is called once per frame
 	void LateUpdate () {
