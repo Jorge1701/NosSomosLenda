@@ -9,21 +9,57 @@ public class Spawn : MonoBehaviour {
 	public int zombiesALaVez = 4;
 	public int zombiesALaVezInc = 2;
 
-	private GameObject zombie;
+	public float zombieNormal = .65f;
+	public float zombieEscupidor = .9f;
+
+	public float tiempoEntreDias = 5f;
+
+	public Gradient luz;
+
+	private Light sol;
+	private float tiempo = 0f;
+	private bool esDia = false;
+
+	private GameObject[] zombies;
 	private Transform[] spawns;
 	private int zombiesOleadaMax = 0;
 	private int zombiesVivos = 0;
 	private int zombiesMatados = 0;
 
+	private int oleada = 1;
+	private float tiempoSigDia = 5f;
+
 	private bool dia = false;
 
 	private MarcadorZombies marcador = null;
 
-	void Start () {
-		GameObject.FindGameObjectsWithTag( "NavMesh" )[0].GetComponent<NavMeshSurface>().BuildNavMesh();;
+	private Text txtDia;
+	private Text sigDia;
 
-		zombie = GameObject.FindGameObjectsWithTag( "Zombie" )[0];
-		zombie.SetActive( false );
+	private Lexa lexa;
+
+	void Start () {
+		lexa = GameObject.FindGameObjectsWithTag( "Player" )[0].GetComponent<Lexa>();
+
+		GameObject.FindGameObjectsWithTag( "NavMesh" )[0].GetComponent<NavMeshSurface>().BuildNavMesh();
+		
+		sigDia = GameObject.Find( "SigDia" ).GetComponent<Text>();
+		sigDia.enabled = false;
+
+		txtDia = GameObject.Find( "Dia" ).GetComponent<Text>();
+		txtDia.text = "Dia: " + oleada;
+		sol = GameObject.FindGameObjectsWithTag( "Sol" )[0].GetComponent<Light>();
+		sol.color = luz.Evaluate( tiempo );
+
+		// zombies = GameObject.FindGameObjectsWithTag( "Zombie" );
+
+		zombies = new GameObject[3];
+		zombies[0] = GameObject.Find( "Zombie Normal" );
+		zombies[1] = GameObject.Find( "Zombie Escupidor" );
+		zombies[2] = GameObject.Find( "Zombie Explosivo" );
+
+		for ( int i = 0; i < zombies.Length; i++ )
+			zombies[i].SetActive( false );
 
 		spawns = new Transform[transform.childCount];
 
@@ -34,8 +70,32 @@ public class Spawn : MonoBehaviour {
 	}
 	
 	void Update () {
+		tiempo += Time.deltaTime * ( esDia ? 1f : -1f );
+
+		if ( esDia ) {
+			if ( tiempo >= 1f )
+				tiempo = 1f;
+
+			tiempoSigDia -= Time.deltaTime;
+
+			sigDia.text = "Siguiente dia en " + ( ( int ) tiempoSigDia ) + " segundos";
+
+			if ( tiempoSigDia <= 0f ) {
+				SubirNivel();
+				esDia = false;
+				sigDia.enabled = false;
+			}
+		} else {
+			if ( tiempo <= 0f )
+				tiempo = 0f;
+		}
+
+		sol.color = luz.Evaluate( tiempo );
+
 		if ( dia && zombiesALaVez > zombiesVivos && zombiesOleadaMax > 0 ) {
-			GameObject z = Instantiate( zombie, spawns[(int) Mathf.Floor( Random.value * spawns.Length )].position, zombie.transform.rotation ) as GameObject;
+			float p = Random.value;
+			int tipo = p < zombieNormal ? 0 : p < zombieEscupidor ? 1 : 2;
+			GameObject z = Instantiate( zombies[tipo], spawns[(int) Mathf.Floor( Random.value * spawns.Length )].position, zombies[tipo].transform.rotation ) as GameObject;
 			z.GetComponent<ZombieController>().SetSpawn( this );
 			z.SetActive( true );
 			zombiesVivos++;
@@ -46,8 +106,10 @@ public class Spawn : MonoBehaviour {
 	}
 
 	void SubirNivel () {
-		zombiesEnOleada += zombiesEnOleadaInc;
-		zombiesALaVez += zombiesALaVezInc;
+		if ( !err ) {
+			zombiesEnOleada += zombiesEnOleadaInc;
+			zombiesALaVez += zombiesALaVezInc;
+		}
 
 		zombiesOleadaMax = zombiesEnOleada;
 		zombiesVivos = 0;
@@ -62,11 +124,21 @@ public class Spawn : MonoBehaviour {
 		if ( err ) {
 			CargarBarra();
 			err = false;
-		} else
+		} else {
+			float muertos = ( float ) ( ( float ) zombiesMatados / ( float ) zombiesEnOleada );
+
+			if ( muertos == 1f ) {
+				esDia = true;
+				sigDia.enabled = true;
+				tiempoSigDia = tiempoEntreDias;
+				lexa.Recuperar();
+			}
+
 			marcador.SetValores(
 				( float ) ( ( float ) ( zombiesMatados + zombiesVivos ) / ( float ) zombiesEnOleada ),
-				( float ) ( ( float ) zombiesMatados / ( float ) zombiesEnOleada )
+				muertos
 			);
+		}
 	}
 
 	void CargarBarra() {

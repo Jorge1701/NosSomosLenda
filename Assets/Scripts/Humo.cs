@@ -5,7 +5,7 @@ public class Humo : MonoBehaviour {
 	public float duracion = 5f;
 	public float danioPorSegundo = 250f;
 
-	private float seg = 0f;
+	private float seg = 1f;
 
 	private Lexa lexa;
 
@@ -22,9 +22,7 @@ public class Humo : MonoBehaviour {
 	}
 
 	void OnTriggerStay ( Collider other ) {
-		Debug.Log( seg );
 		if ( other.gameObject.tag == "Player" && seg >= 1f ) {
-			Debug.Log( "Daniar" );
 			lexa.daniar( danioPorSegundo );
 			seg = 0f;
 		}

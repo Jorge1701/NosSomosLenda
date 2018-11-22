@@ -54,7 +54,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duracion: 5
-  danioPorSegundo: 10
+  danioPorSegundo: 50
 --- !u!122 &122751272176889846
 Halo:
   m_ObjectHideFlags: 1

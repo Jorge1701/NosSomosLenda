@@ -155,4 +155,9 @@ public class Lexa : MonoBehaviour {
 		if ( vida <= 0f )
 			Destroy( gameObject, 3f );
 	}
+
+	public void Recuperar () {
+		vida = vidaMax;
+		barraVida.Vida( vida );
+	}
 }
