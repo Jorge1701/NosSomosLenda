@@ -17,9 +17,11 @@ public class ZombieController : MonoBehaviour {
 	public GameObject particulasSangre;
 	private Escupitajo escupitajo;
 	public GameObject dna;
+	public GameObject explosion;
+	private bool atacando = false;
 
 	public enum Tipo{
-		ZOMBIE1, ZOMBIE2, ZOMBIE3
+		NORMAL, EXPLOSIVO, ESCUPIDOR
 	};
 
 	public Tipo tipo;
@@ -40,12 +42,13 @@ public class ZombieController : MonoBehaviour {
 			anim.SetBool("atacar_base", false);
 			anim.SetBool("morir", true);
 			Destroy(gameObject, 5f);
-			if(tipo == Tipo.ZOMBIE1){
+			if(tipo == Tipo.NORMAL){
 				if(Random.value < .5)
 					Instantiate(dna, transform.position, dna.transform.rotation);
 			}else{
 				Instantiate(dna, transform.position, dna.transform.rotation);		
 			}
+
 			zombie.SetDestination(transform.position);
 			return;
 		}
@@ -64,7 +67,7 @@ public class ZombieController : MonoBehaviour {
     	zombie = GetComponent<NavMeshAgent>();
     	scriptLexa = player.GetComponent<Lexa>();
 
-    	if(tipo == Tipo.ZOMBIE3){
+    	if(tipo == Tipo.ESCUPIDOR){
     		ataque = ataque * 3;
     		vida = vida * 2;
     		escupitajo = GetComponent<Escupitajo>();
@@ -80,81 +83,105 @@ void Update () {
         //Debug.Log(centro);
 	tiempoSiguienteAtaque -= Time.deltaTime;
 
-	Vector3 posicionCentro = new Vector3(centro.transform.position.x, 1.5f, centro.transform.position.z);
+	Vector3 posicionCentro = new Vector3(centro.transform.position.x, 2.0f, centro.transform.position.z);
 	
-	float distance_jugador = 0;
-	if(player != null)	
-		distance_jugador = Vector2.Distance(new Vector2(player.transform.position.x, player.transform.position.z), new Vector2(zombie.transform.position.x, zombie.transform.position.z)); 
-	else{
-		detenerAtaque();
-		zombie.SetDestination(posicionCentro);
-	}
+	if(zombie == null)
+		return;
 
-	float distance_base = Vector2.Distance(new Vector2(centro.transform.position.x, player.transform.position.z), new Vector2(zombie.transform.position.x, zombie.transform.position.z)); 
+	if(player != null){
+		float distance_jugador = Vector2.Distance(new Vector2(player.transform.position.x, player.transform.position.z), new Vector2(zombie.transform.position.x, zombie.transform.position.z)); 
+		float distance_base = Vector2.Distance(new Vector2(centro.transform.position.x, player.transform.position.z), new Vector2(zombie.transform.position.x, zombie.transform.position.z)); 
+		
+		if(vida > 0){
+			Vector3 posicionJugador = new Vector3(player.transform.position.x, 2.0f, player.transform.position.z);
 
-	if(vida > 0 && player != null){
-		Vector3 posicionJugador = new Vector3(player.transform.position.x, 1.5f, player.transform.position.z);
-		if(tipo == Tipo.ZOMBIE1 || tipo == Tipo.ZOMBIE2){
-			if(distance_jugador <= distance_base){	
+			if(tipo == Tipo.NORMAL || tipo == Tipo.EXPLOSIVO){
+				if(distance_jugador <= distance_base){	
+					
+					zombie.SetDestination(posicionJugador);
+					
+					if(distance_jugador <= 2){
+						if(tiempoSiguienteAtaque <= 0){
+							if(tipo == Tipo.EXPLOSIVO){
+								tirarBomba();
+								scriptLexa.daniar(-1);
+							}else{
+								atacarJugador();
+								scriptLexa.daniar(ataque);
+							}
+							tiempoSiguienteAtaque = tiempoEntreAtaque;
+						}
+					}else{
+						detenerAtaque();
+					}
+
+				}else{
+					
+					zombie.SetDestination(posicionCentro);  
+					
+					if(distance_base <= 3){
+						atacarBase();
+					}else{
+						detenerAtaque();
+					}
+				}
+			}else if (tipo == Tipo.ESCUPIDOR ){
+				
 				zombie.SetDestination(posicionJugador);
-				if(distance_jugador <= 2){
-					atacarJugador();
+				
+				if(distance_jugador <= 20){
 					if(tiempoSiguienteAtaque <= 0){
-						if(tipo == Tipo.ZOMBIE2)
-							scriptLexa.daniar(-1);
-						else
-							scriptLexa.daniar(ataque);
-			
+						atacarJugador();
+						escupitajo.Escupir();
 						tiempoSiguienteAtaque = tiempoEntreAtaque;
 					}
 				}else{
 					detenerAtaque();
 				}
 
-			}else{
-				zombie.SetDestination(posicionCentro);  
-				if(distance_base <= 3){
-					//LLamar funcion para hacer daño a la base
-					atacarBase();
-				}else{
-					detenerAtaque();
-				}
 			}
-		}else if (tipo == Tipo.ZOMBIE3 ){
-			zombie.SetDestination(posicionJugador);
-			if(distance_jugador <= 20){
-				atacarJugador();
-				if(tiempoSiguienteAtaque <= 0){
-					escupitajo.Escupir();
-					tiempoSiguienteAtaque = tiempoEntreAtaque;
-				}
-			}else{
-				detenerAtaque();
-			}
-
 		}
+	}else{
+		detenerAtaque();
+		zombie.SetDestination(posicionCentro);
 	}
 
 }
 
 void atacarBase(){
-	zombie.transform.LookAt(centro.transform);
-	anim.SetBool("atacar_base", true);
-	anim.SetBool("atacar_jugador", false);
-	zombie.SetDestination(transform.position);
+	if(!atacando){
+		zombie.transform.LookAt(centro.transform);
+		zombie.SetDestination(transform.position);
+		anim.SetBool("atacar_base", true);
+		anim.SetBool("atacar_jugador", false);
+		atacando = true;
+	}
+	
 }
 
 void atacarJugador(){
-	zombie.transform.LookAt(player.transform);
-	anim.SetBool("atacar_base", false);
-	anim.SetBool("atacar_jugador", true);
-	zombie.SetDestination(transform.position);
+	if(!atacando){
+		zombie.transform.LookAt(player.transform);
+		zombie.SetDestination(transform.position);
+		anim.SetBool("atacar_base", false);
+		anim.SetBool("atacar_jugador", true);
+		atacando = true;
+	}
+}
+
+void tirarBomba(){
+	Instantiate(explosion, transform.position, explosion.transform.rotation);
+	Destroy(zombie);
 }
 
 void detenerAtaque(){
-	anim.SetBool("atacar_base", false);
-	anim.SetBool("atacar_jugador", false);
+	if(atacando){
+		anim.SetBool("atacar_base", false);
+		anim.SetBool("atacar_jugador", false);
+		atacando = false;
+	}
 }
+	
 
 void FixedUpdate(){
 
