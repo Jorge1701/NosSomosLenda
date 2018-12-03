@@ -127,11 +127,14 @@ void Update () {
 					
 					zombie.SetDestination(posicionCentro);  
 					
-					if(distance_base <= 4){
+					if(distance_base <= 4 && tiempoSiguienteAtaque <= 0){
 						if ( tipo == Tipo.EXPLOSIVO )
 							tirarBomba();
-						else
+						else{
 							atacarBase();
+							detenerAtaque();
+						}
+						tiempoSiguienteAtaque = tiempoEntreAtaque;
 					}else{
 						detenerAtaque();
 					}
@@ -169,6 +172,8 @@ void atacarBase(){
 		anim.SetBool("atacar_base", true);
 		anim.SetBool("atacar_jugador", false);
 		atacando = true;
+		centro.GetComponent<Base>().daniar(10);
+
 	}
 	
 }

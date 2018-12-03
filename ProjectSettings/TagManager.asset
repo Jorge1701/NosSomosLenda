@@ -12,6 +12,7 @@ TagManager:
   - marcadorZombies
   - HealthBar
   - Sol
+  - vidaBase
   layers:
   - Default
   - TransparentFX
