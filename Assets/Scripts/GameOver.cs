@@ -5,7 +5,8 @@ public class GameOver : MonoBehaviour {
 
 	private GameObject panel;
 	private Text texto;
-	private Animator anim;
+
+	private bool iniciado = false;
 
 	void Start () {
 		panel = GameObject.Find( "Panel" );
@@ -13,7 +14,10 @@ public class GameOver : MonoBehaviour {
 	}
 
 	void Update () {
-		panel.SetActive( false );
+		if ( !iniciado ) {
+			panel.SetActive( false );	
+			iniciado = true;
+		}
 	}
 
 	public void Mostrar ( string texto ) {

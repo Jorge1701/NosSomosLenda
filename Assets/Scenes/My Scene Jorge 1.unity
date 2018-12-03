@@ -4618,7 +4618,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4094619511826146, guid: 800bde1382c7a714cb5e62d291ff2502, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -54
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4094619511826146, guid: 800bde1382c7a714cb5e62d291ff2502, type: 2}
       propertyPath: m_LocalPosition.y
@@ -4626,7 +4626,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4094619511826146, guid: 800bde1382c7a714cb5e62d291ff2502, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -0.00001579523
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4094619511826146, guid: 800bde1382c7a714cb5e62d291ff2502, type: 2}
       propertyPath: m_LocalRotation.x
@@ -4647,6 +4647,11 @@ Prefab:
     - target: {fileID: 4094619511826146, guid: 800bde1382c7a714cb5e62d291ff2502, type: 2}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114636187811882662, guid: 800bde1382c7a714cb5e62d291ff2502,
+        type: 2}
+      propertyPath: puntosPorDNA
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 800bde1382c7a714cb5e62d291ff2502, type: 2}
