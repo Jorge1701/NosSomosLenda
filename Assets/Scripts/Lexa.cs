@@ -35,6 +35,8 @@ public class Lexa : MonoBehaviour {
 
 	private Animator sangre;
 
+	private GameOver go;
+
 	void Start () {
 		vida = vidaMax;
 
@@ -53,6 +55,8 @@ public class Lexa : MonoBehaviour {
 		barraVida.Max( vidaMax );
 
 		sangre = GameObject.Find( "Sangre" ).GetComponent<Animator>();
+
+		go = GameObject.Find( "Panel" ).GetComponent<GameOver>();
 	}
 
 	void Update () {
@@ -161,8 +165,10 @@ public class Lexa : MonoBehaviour {
 
 		sangre.Play( "Sangrar" );
 
-		if ( vida <= 0f )
+		if ( vida <= 0f ) {
+			go.Mostrar( "Game Over, has muerto!" );
 			Destroy( gameObject, 3f );
+		}
 	}
 
 	public void Recuperar () {
