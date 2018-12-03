@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent( typeof( LineRenderer ) )]
 [RequireComponent( typeof( Rigidbody ) )]
@@ -10,6 +11,8 @@ public class Coraje : MonoBehaviour {
 
 	public float distanciaSostener = 1f;
 	public float rayoLoco = .25f;
+
+	public float puntosPorDNA = .5f;
 
 	private Transform lexa;
 	private Transform centro;
@@ -30,7 +33,15 @@ public class Coraje : MonoBehaviour {
 
 	private float tiempo = 0;
 
+	private Image progreso;
+	private Text porcentaje;
+
+	private float p = 0;
+
 	void Start () {
+		progreso = GameObject.Find( "ProgresoCura" ).GetComponent<Image>();
+		porcentaje = GameObject.Find( "Porcentaje" ).GetComponent<Text>();
+
 		lexa = GameObject.FindGameObjectsWithTag( "Player" )[0].transform;
 		centro = GameObject.FindGameObjectsWithTag( "Centro" )[0].transform;
 		camara = GameObject.FindGameObjectsWithTag( "MainCamera" )[0].GetComponent<Camera>();
@@ -73,6 +84,9 @@ public class Coraje : MonoBehaviour {
 					estado = Estado.BUSCAR;
 				}
 		}
+
+		if ( estado == Estado.CENTRO && ( transform.position - centro.transform.position ).magnitude <= 3f )
+			Entregar();
 	}
 	
 	void FixedUpdate () {
@@ -103,11 +117,26 @@ public class Coraje : MonoBehaviour {
 
 			objetivo = centro;
 			estado = Estado.CENTRO;
-		} else if ( c.gameObject.tag.CompareTo( "Centro" ) == 0 && estado == Estado.CENTRO ) {
-			recolectable.Entregar();
+		} else if ( c.gameObject.tag.CompareTo( "Centro" ) == 0 && estado == Estado.CENTRO )
+			Entregar();
+	}
 
-			objetivo = lexa;
-			estado = Estado.LEXA;
+	void Entregar () {
+		recolectable.Entregar();
+		AumentarProgreso();
+
+		objetivo = lexa;
+		estado = Estado.LEXA;
+	}
+
+	void AumentarProgreso () {
+		p += puntosPorDNA;
+
+		if ( p >= 100f ) {
+			Debug.Log( "Ganaste!" );
 		}
+
+		progreso.fillAmount = p / 100;
+		porcentaje.text = ( ( int ) p ) + "%";
 	}
 }

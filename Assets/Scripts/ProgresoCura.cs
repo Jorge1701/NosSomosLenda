@@ -3,15 +3,16 @@ using UnityEngine.UI;
 using System;
 
 public class ProgresoCura : MonoBehaviour {
-
+/*
     public Image Progreso;
-    public float tiempo = 5f;
-    private float contadorTiempo;
-    public Text porcentaje;
+    private Text porcentaje;
    
 	void Start () {
-        contadorTiempo = 0;
+        Progreso = GameObject.Find( "ProgresoCura" ).GetComponent<Image>();
+        porcentaje = GameObject.Find( "Porcentaje" ).GetComponent<Text>();
     }
+
+    public void Porcentaje
 	
 	void Update () {
         if (contadorTiempo <= tiempo) {
@@ -20,5 +21,5 @@ public class ProgresoCura : MonoBehaviour {
             porcentaje.text = (Convert.ToInt32(100 * Progreso.fillAmount)).ToString()+"%";
 
         }
-	}
+	}*/
 }

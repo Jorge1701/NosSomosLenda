@@ -132,6 +132,14 @@ public class Spawn : MonoBehaviour {
 				sigDia.enabled = true;
 				tiempoSigDia = tiempoEntreDias;
 				lexa.Recuperar();
+
+				oleada++;
+				txtDia.text = "Dia: " + oleada;
+			}
+
+			if ( marcador == null ) {
+				CargarBarra();
+				return;
 			}
 
 			marcador.SetValores(
@@ -142,12 +150,12 @@ public class Spawn : MonoBehaviour {
 	}
 
 	void CargarBarra() {
-		GameObject[] mz = GameObject.FindGameObjectsWithTag( "marcadorZombies" );
+		GameObject mz = GameObject.Find( "Marcador Zombies" );
 
-		if ( mz.Length == 0 )
+		if ( mz == null )
 			Debug.LogWarning( "Coloque el prefab 'Marcador Zombies' dentro de un Canvas" );
 		else
-			marcador = mz[0].GetComponent<MarcadorZombies>();
+			marcador = mz.GetComponent<MarcadorZombies>();
 	}
 
 	public void IniciarDia () {

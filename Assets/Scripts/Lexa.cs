@@ -33,6 +33,8 @@ public class Lexa : MonoBehaviour {
 
 	private BarraVida barraVida;
 
+	private Animator sangre;
+
 	void Start () {
 		vida = vidaMax;
 
@@ -49,6 +51,8 @@ public class Lexa : MonoBehaviour {
 
 		barraVida = GameObject.FindGameObjectsWithTag( "HealthBar" )[0].GetComponent<BarraVida>();
 		barraVida.Max( vidaMax );
+
+		sangre = GameObject.Find( "Sangre" ).GetComponent<Animator>();
 	}
 
 	void Update () {
@@ -145,12 +149,17 @@ public class Lexa : MonoBehaviour {
 		if ( vida <= 0f )
 			return;
 
-		if ( danio == -1f )
-			vida = 5f;
-		else
+		if ( danio == -1f ) {
+			if ( vida / vidaMax <= .50f )
+				vida = 0;
+			else
+				vida = 20f;
+		} else
 			vida -= danio;
 
 		barraVida.Vida( vida );
+
+		sangre.Play( "Sangrar" );
 
 		if ( vida <= 0f )
 			Destroy( gameObject, 3f );

@@ -35,13 +35,19 @@ public class ZombieController : MonoBehaviour {
 	}
 
 	public void daniar(float danio){
+		if ( vida <= 0 )
+			return;
+
+		vida -= danio;
+
 		if ( vida <= 0 ){
 			cc.enabled = false;
 			spawn.ZombieMuerto();
-			anim.SetBool("atacar_jugador", false);
-			anim.SetBool("atacar_base", false);
-			anim.SetBool("morir", true);
-			Destroy(gameObject, 5f);
+			if ( tipo != Tipo.EXPLOSIVO ) {
+				anim.SetBool("atacar_jugador", false);
+				anim.SetBool("atacar_base", false);
+				anim.SetBool("morir", true);
+			}
 			if(tipo == Tipo.NORMAL){
 				if(Random.value < .5)
 					Instantiate(dna, transform.position, dna.transform.rotation);
@@ -50,10 +56,10 @@ public class ZombieController : MonoBehaviour {
 			}
 
 			zombie.SetDestination(transform.position);
+			Destroy(gameObject, ( tipo != Tipo.EXPLOSIVO ? 5f : 0f ) );
 			return;
 		}
 		
-		vida -= danio;
 		GameObject sangre = GameObject.Instantiate(particulasSangre, transform.position, particulasSangre.transform.rotation) as GameObject;
 		Destroy(sangre, 2f);
 		
@@ -72,6 +78,8 @@ public class ZombieController : MonoBehaviour {
     		vida = vida * 2;
     		escupitajo = GetComponent<Escupitajo>();
     		tiempoEntreAtaque = 5;
+    	} else if ( tipo == Tipo.EXPLOSIVO ) {
+    		vida *= 4;
     	}
     	tiempoSiguienteAtaque = 0;	
 
@@ -83,17 +91,17 @@ void Update () {
         //Debug.Log(centro);
 	tiempoSiguienteAtaque -= Time.deltaTime;
 
-	Vector3 posicionCentro = new Vector3(centro.transform.position.x, 2.0f, centro.transform.position.z);
+	Vector3 posicionCentro = new Vector3(centro.transform.position.x, 1f, centro.transform.position.z);
 	
 	if(zombie == null)
 		return;
 
 	if(player != null){
 		float distance_jugador = Vector2.Distance(new Vector2(player.transform.position.x, player.transform.position.z), new Vector2(zombie.transform.position.x, zombie.transform.position.z)); 
-		float distance_base = Vector2.Distance(new Vector2(centro.transform.position.x, player.transform.position.z), new Vector2(zombie.transform.position.x, zombie.transform.position.z)); 
+		float distance_base = Vector2.Distance(new Vector2(centro.transform.position.x, centro.transform.position.z), new Vector2(zombie.transform.position.x, zombie.transform.position.z)); 
 		
 		if(vida > 0){
-			Vector3 posicionJugador = new Vector3(player.transform.position.x, 2.0f, player.transform.position.z);
+			Vector3 posicionJugador = new Vector3(player.transform.position.x, 1f, player.transform.position.z);
 
 			if(tipo == Tipo.NORMAL || tipo == Tipo.EXPLOSIVO){
 				if(distance_jugador <= distance_base){	
@@ -119,8 +127,11 @@ void Update () {
 					
 					zombie.SetDestination(posicionCentro);  
 					
-					if(distance_base <= 3){
-						atacarBase();
+					if(distance_base <= 4){
+						if ( tipo == Tipo.EXPLOSIVO )
+							tirarBomba();
+						else
+							atacarBase();
 					}else{
 						detenerAtaque();
 					}
@@ -129,7 +140,9 @@ void Update () {
 				
 				zombie.SetDestination(posicionJugador);
 				
-				if(distance_jugador <= 20){
+				if(distance_jugador <= 15){
+					zombie.Stop();
+
 					if(tiempoSiguienteAtaque <= 0){
 						atacarJugador();
 						escupitajo.Escupir();
@@ -142,6 +155,7 @@ void Update () {
 			}
 		}
 	}else{
+		Debug.Log( "Player null" );
 		detenerAtaque();
 		zombie.SetDestination(posicionCentro);
 	}
@@ -171,7 +185,8 @@ void atacarJugador(){
 
 void tirarBomba(){
 	Instantiate(explosion, transform.position, explosion.transform.rotation);
-	Destroy(zombie);
+	spawn.ZombieMuerto();
+	Destroy( gameObject );
 }
 
 void detenerAtaque(){

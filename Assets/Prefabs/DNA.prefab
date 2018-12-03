@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4338388761630864}
   - component: {fileID: 33358629552430326}
   - component: {fileID: 23760739192722574}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Colba_parts
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 4767821884196888}
   - component: {fileID: 33435430268318382}
   - component: {fileID: 23126328129499080}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 122323834634736422}
   - component: {fileID: 65771862952021704}
   - component: {fileID: 114157144748503950}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: DNA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   - component: {fileID: 4477608482531244}
   - component: {fileID: 33969585930740334}
   - component: {fileID: 23460332929410310}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Colba
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 33993545590199490}
   - component: {fileID: 23177639591004186}
   - component: {fileID: 114244140763555660}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: DNA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
