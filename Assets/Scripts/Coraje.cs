@@ -38,6 +38,8 @@ public class Coraje : MonoBehaviour {
 
 	private float p = 0;
 
+	private GameOver go;
+
 	void Start () {
 		progreso = GameObject.Find( "ProgresoCura" ).GetComponent<Image>();
 		porcentaje = GameObject.Find( "Porcentaje" ).GetComponent<Text>();
@@ -52,6 +54,8 @@ public class Coraje : MonoBehaviour {
 		objetivo = lexa;
 		punto = transform.Find( "Punto" );
 		estado = Estado.LEXA;
+
+		go = GameObject.Find( "Panel" ).GetComponent<GameOver>();
 	}
 
 	void ModificarRayo () {
@@ -133,7 +137,8 @@ public class Coraje : MonoBehaviour {
 		p += puntosPorDNA;
 
 		if ( p >= 100f ) {
-			Debug.Log( "Ganaste!" );
+			Time.timeScale = 0f;
+			go.Mostrar( "Ganaste!" );
 		}
 
 		progreso.fillAmount = p / 100;

@@ -166,6 +166,7 @@ public class Lexa : MonoBehaviour {
 		sangre.Play( "Sangrar" );
 
 		if ( vida <= 0f ) {
+			Time.timeScale = 0f;
 			go.Mostrar( "Game Over, has muerto!" );
 			Destroy( gameObject, 3f );
 		}
